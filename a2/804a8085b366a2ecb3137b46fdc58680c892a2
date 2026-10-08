@@ -1,0 +1,39 @@
+cli2/frontend/src/Cli2Screen.jsx
+  s_45e6e8700e3d89::t_5138c598d0cd9e 1-12
+cli2/frontend/package.json
+  s_45e6e8700e3d89::t_08ceb893953741 1-18
+cli2/frontend/index.html
+  s_45e6e8700e3d89::t_a0fb635acd6340 1-12
+cli2/backend/src/Cli2ServiceProvider.php
+  s_45e6e8700e3d89::t_9beaa1f90f44dc 1-18
+cli2/frontend/src/main.jsx
+  s_45e6e8700e3d89::t_eae9606a9c1f40 1-17
+cli2/frontend/src/cli2.css
+  s_45e6e8700e3d89::t_866d8ebc5e1fa1 1-130
+cli2/backend/routes/api.php
+  s_45e6e8700e3d89::t_825012b5681691 1-7
+cli2/backend/composer.json
+  s_45e6e8700e3d89::t_d2d79a8e3d837d 1-23
+cli2/frontend/vite.config.js
+  s_45e6e8700e3d89::t_559cf201ed4b3c 1-6
+cli2/frontend/.dockerignore
+  s_45e6e8700e3d89::t_18ce4219f654c6 1-2
+cli2/compose-cli2.yaml
+  s_45e6e8700e3d89::t_b05d794041ca8a 1-19
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "a2804a8085b366a2ecb3137b46fdc58680c892a2",
+  "prompts": {},
+  "sessions": {
+    "s_45e6e8700e3d89": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98b417ca-9542-4336-a95f-6bf2159a9c48",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Charles-Henry Vagner <cva@atolcd.com>"
+    }
+  }
+}
