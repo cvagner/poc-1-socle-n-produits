@@ -1,0 +1,29 @@
+README.md
+  s_45e6e8700e3d89::t_659f41b82f9276 1,5-6,44,48,254,297,334,416
+docs/adr/0004-une-image-par-cible.md
+  s_45e6e8700e3d89::t_327632fe8ef7ff 46
+docs/adr/0005-deux-topologies-par-surcharge-compose.md
+  s_45e6e8700e3d89::t_4544b235d5ccb8 53
+docs/plan_00_initial.md
+  s_45e6e8700e3d89::t_55d3a3b94e831c 1,5,26,30,105,113
+socle/compose.yaml
+  s_45e6e8700e3d89::t_3532bb80092df0 6
+socle/frontend/packages/core-ui/src/AppShell.jsx
+  s_45e6e8700e3d89::t_fab5577de902f5 10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "c731c5492e732b3d02039e4fa3fef678fdb5ec3e",
+  "prompts": {},
+  "sessions": {
+    "s_45e6e8700e3d89": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98b417ca-9542-4336-a95f-6bf2159a9c48",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Charles-Henry Vagner <cva@atolcd.com>"
+    }
+  }
+}
