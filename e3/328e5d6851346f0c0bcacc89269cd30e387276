@@ -1,0 +1,36 @@
+Makefile
+  s_45e6e8700e3d89::t_6297a0d421fe0f 1,4-5,7,9
+cli2/frontend/package.json
+  s_45e6e8700e3d89::t_de6d664c59dcdf 7-8
+socle/compose-dev.yaml
+  s_45e6e8700e3d89::t_d81f15da055870 1-11,15-16,21-26,29-46
+  s_45e6e8700e3d89::t_f2e4ee375c26bf 12-14,17-20
+  s_45e6e8700e3d89::t_bf2367ca2f3a5e 27-28
+cli1/frontend/vite.config.js
+  s_45e6e8700e3d89::t_68a10b261e731a 6-8
+socle/frontend/Dockerfile
+  s_45e6e8700e3d89::t_5bb0ebdfb42f25 6-7,9-11,24-26
+cli1/frontend/package.json
+  s_45e6e8700e3d89::t_de6d664c59dcdf 7-8
+socle/gateway/default.conf
+  s_45e6e8700e3d89::t_837623675395b6 42-46
+  s_45e6e8700e3d89::t_f12d60460ecf73 4-11
+cli2/frontend/vite.config.js
+  s_45e6e8700e3d89::t_68a10b261e731a 6-8
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "e3328e5d6851346f0c0bcacc89269cd30e387276",
+  "prompts": {},
+  "sessions": {
+    "s_45e6e8700e3d89": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98b417ca-9542-4336-a95f-6bf2159a9c48",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Charles-Henry Vagner <cva@atolcd.com>"
+    }
+  }
+}
