@@ -1,0 +1,23 @@
+{
+    "name": "archi/core",
+    "description": "Socle technique partagé : registre des modules, fournisseur de module et format de réponse. Bibliothèque, non déployée seule.",
+    "type": "library",
+    "version": "0.1.0",
+    "license": "proprietary",
+    "require": {
+        "php": "^8.3",
+        "laravel/framework": "^13.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Archi\\Core\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Archi\\Core\\CoreServiceProvider"
+            ]
+        }
+    }
+}

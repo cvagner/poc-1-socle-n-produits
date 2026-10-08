@@ -1,0 +1,23 @@
+{
+    "name": "archi/common",
+    "description": "Services communs à tous les clients.",
+    "type": "library",
+    "version": "0.1.0",
+    "license": "proprietary",
+    "require": {
+        "php": "^8.3",
+        "archi/core": "^0.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Archi\\Common\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Archi\\Common\\CommonServiceProvider"
+            ]
+        }
+    }
+}

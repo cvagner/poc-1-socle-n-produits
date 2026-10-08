@@ -1,0 +1,37 @@
+{
+    "$schema": "https://getcomposer.org/schema.json",
+    "name": "archi/host",
+    "type": "project",
+    "description": "Application Laravel hôte : assemble archi/core et les modules choisis au build (archi/common, archi/cliN).",
+    "license": "proprietary",
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../packages/*",
+            "options": {
+                "symlink": false
+            }
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "archi/core": "^0.1",
+        "laravel/framework": "^13.17"
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ],
+        "pre-package-uninstall": [
+            "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
+        ]
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

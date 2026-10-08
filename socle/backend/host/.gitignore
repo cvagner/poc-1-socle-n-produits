@@ -1,0 +1,4 @@
+/vendor
+# Résolu au build pour chaque cible (compromis du POC, cf. ADR 0010)
+/composer.lock
+.env

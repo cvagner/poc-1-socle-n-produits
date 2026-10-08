@@ -1,0 +1,3 @@
+host/vendor
+host/composer.lock
+host/.env
