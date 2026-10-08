@@ -1,0 +1,26 @@
+cli2/frontend/src/main.jsx
+  s_45e6e8700e3d89::t_bfdffd4b1ef86c 5,12
+cli2/backend/routes/api.php
+  s_45e6e8700e3d89::t_9b76e1f0088fea 8-10
+cli2/frontend/src/Cli2CatalogueScreen.jsx
+  s_45e6e8700e3d89::t_d322d6eaf3dfc4 1-12
+README.md
+  s_45e6e8700e3d89::t_23c101b22d81e4 62,101
+  s_45e6e8700e3d89::t_8118dba9ac70e0 102
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "4fb1d629a9fdf0af572e0f481ea8794dd5cc667d",
+  "prompts": {},
+  "sessions": {
+    "s_45e6e8700e3d89": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98b417ca-9542-4336-a95f-6bf2159a9c48",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Charles-Henry Vagner <cva@atolcd.com>"
+    }
+  }
+}
