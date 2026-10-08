@@ -1,0 +1,24 @@
+socle/compose.yaml
+  s_45e6e8700e3d89::t_40486d3db529fe 1-73
+socle/compose-standalone.yaml
+  s_45e6e8700e3d89::t_79aea115f24943 1-21
+Makefile
+  s_45e6e8700e3d89::t_1545a73c3fa5df 11-12,15,17
+  s_45e6e8700e3d89::t_d427317dd3c184 1-10,13-14,16,18-30
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "05c6440893af39666d10cb9bd26ee86bd957b73a",
+  "prompts": {},
+  "sessions": {
+    "s_45e6e8700e3d89": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98b417ca-9542-4336-a95f-6bf2159a9c48",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Charles-Henry Vagner <cva@atolcd.com>"
+    }
+  }
+}
