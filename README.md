@@ -61,6 +61,7 @@ poc-1-socle-n-produits/
 │   ├── backend/                        # archi/cli1 : GET /api/cli1/hello
 │   └── frontend/                       # appli React du client 1 + cli1.css
 └── cli2/                               # futur dépôt « cli2 », même structure
+    └── backend/                        # archi/cli2 : GET /api/cli2/hello et GET /api/cli2/catalogue
 ```
 
 ```mermaid
@@ -99,8 +100,8 @@ flowchart TB
     class depot_cli1 level1
 
     subgraph depot_cli2["Dépôt cli2"]
-        cli2_back["archi/cli2<br/>GET /api/cli2/hello"]:::app
-        cli2_front["front cli2<br/>Cli2Screen + cli2.css"]:::app
+        cli2_back["archi/cli2<br/>GET /api/cli2/hello<br/>GET /api/cli2/catalogue"]:::app
+        cli2_front["front cli2<br/>Cli2Screen, Cli2CatalogueScreen<br/>+ cli2.css"]:::app
     end
     class depot_cli2 level1
 
