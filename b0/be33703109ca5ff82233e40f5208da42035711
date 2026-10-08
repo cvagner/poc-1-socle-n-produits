@@ -1,0 +1,24 @@
+README.md
+  s_45e6e8700e3d89::t_75b4129184bcfb 65
+  s_45e6e8700e3d89::t_efe95cdc7c23a8 83-84,87,107,110-114,116-139,141-144
+  s_45e6e8700e3d89::t_ca4c24b5079eb1 92-103,115,295
+  s_45e6e8700e3d89::t_d08790c76eb93b 9,43
+  s_45e6e8700e3d89::t_2fd71f6309a3e3 42
+  s_45e6e8700e3d89::t_456df062785900 1-8,10-41,44-64,66-82,85-86,88-91,104-106,108-109,140,145-294,296-405
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "b0be33703109ca5ff82233e40f5208da42035711",
+  "prompts": {},
+  "sessions": {
+    "s_45e6e8700e3d89": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98b417ca-9542-4336-a95f-6bf2159a9c48",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Charles-Henry Vagner <cva@atolcd.com>"
+    }
+  }
+}
