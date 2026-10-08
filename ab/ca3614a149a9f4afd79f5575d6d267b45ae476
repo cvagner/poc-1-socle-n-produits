@@ -1,0 +1,26 @@
+socle/frontend/nginx/default.conf
+  s_45e6e8700e3d89::t_02909fb17a5553 1-2
+docs/plan_01_gateway.md
+  s_45e6e8700e3d89::t_eaf9c54aac08a6 1-88,90-128
+  s_45e6e8700e3d89::t_14c63299537eda 89
+docs/adr/0001-consigner-les-decisions-en-adr.md
+  s_45e6e8700e3d89::t_217bbfe25b9224 30
+README.md
+  s_45e6e8700e3d89::t_217bbfe25b9224 9,43
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "abca3614a149a9f4afd79f5575d6d267b45ae476",
+  "prompts": {},
+  "sessions": {
+    "s_45e6e8700e3d89": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98b417ca-9542-4336-a95f-6bf2159a9c48",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Charles-Henry Vagner <cva@atolcd.com>"
+    }
+  }
+}
