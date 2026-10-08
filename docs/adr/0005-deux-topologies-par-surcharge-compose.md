@@ -36,8 +36,8 @@ Option A. La surcharge `socle/compose-standalone.yaml` :
 
 - désactive `api-common` en lui attribuant le profil `split`, jamais activé ;
 - construit `api` avec `COMMON=true` ;
-- donne à `api` l'**alias réseau `api-common`** : le nginx du front ([ADR 0008](0008-nginx-du-front-en-reverse-proxy.md)) garde la même configuration dans les deux solutions ;
-- remplace les dépendances du front par `depends_on: !override`, limitées à `api`.
+- donne à `api` l'**alias réseau `api-common`** : le point d'entrée garde la même configuration dans les deux solutions. Ce point d'entrée était d'abord le nginx du front ([ADR 0008](0008-nginx-du-front-en-reverse-proxy.md)), c'est aujourd'hui la passerelle ([ADR 0011](0011-passerelle-nginx-dediee.md)) ;
+- ~~remplace les dépendances du front par `depends_on: !override`, limitées à `api`~~. Retiré le 2026-10-08 avec l'[ADR 0011](0011-passerelle-nginx-dediee.md) : la passerelle résout les noms à chaque requête, et plus aucun service ne dépend des API.
 
 | Solution | `COMPOSE_FILE` (exemple cli1) |
 |---|---|

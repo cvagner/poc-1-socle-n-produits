@@ -31,14 +31,16 @@ Un POC destiné à servir de modèle doit les appliquer d'emblée.
 
 Option A, factorisée par l'ancre `x-api` de `socle/compose.yaml` pour les API.
 
-| Réglage | API (`api-common`, `api`) | Front |
-|---|---|---|
-| Utilisateur | `${APP_UID:-10001}:${APP_GID:-10001}` | idem |
-| `read_only` | `true` | `true` |
-| tmpfs | `/tmp`, `/app/storage/framework/views:mode=1777`, `/app/storage/framework/cache:mode=1777` | `/tmp`, `/etc/nginx/conf.d:mode=1777` |
-| Limites | 0,5 CPU, 256 Mio | 0,25 CPU, 64 Mio |
-| Sonde | `curl -fsS http://localhost:8000/up` | `curl -fsS http://localhost:8080/` |
-| Exposition | aucune | `127.0.0.1:${FRONT_PORT:-8080}` |
+| Réglage | API (`api-common`, `api`) | Front | Passerelle (`gateway`) |
+|---|---|---|---|
+| Utilisateur | `${APP_UID:-10001}:${APP_GID:-10001}` | idem | idem |
+| `read_only` | `true` | `true` | `true` |
+| tmpfs | `/tmp`, `/app/storage/framework/views:mode=1777`, `/app/storage/framework/cache:mode=1777` | `/tmp` | `/tmp` |
+| Limites | 0,5 CPU, 256 Mio | 0,25 CPU, 64 Mio | 0,25 CPU, 64 Mio |
+| Sonde | `curl -fsS http://localhost:8000/up` | `curl -fsS http://localhost:8080/` | `curl -fsS http://localhost:8080/healthz` |
+| Exposition | aucune | aucune | `127.0.0.1:${HTTP_PORT:-8080}` |
+
+Mise à jour du 2026-10-08 ([ADR 0011](0011-passerelle-nginx-dediee.md)) : ajout de la passerelle. Le port publié passe du front à la passerelle (`FRONT_PORT` devient `HTTP_PORT`). Le front n'a plus de tmpfs sur `/etc/nginx/conf.d`, car sa configuration est désormais copiée dans l'image.
 
 Les fichiers des images appartiennent à root et sont lisibles par tous (`chmod -R a+rX` au build), si bien que n'importe quel UID peut les lire.
 

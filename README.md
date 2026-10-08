@@ -31,6 +31,7 @@ L'expression de besoin initiale est dans [docs/prompt_initial.md](docs/prompt_in
 | Solution 1 : API `common` et API `cliN` séparées | Deux conteneurs : `api-common` (core + common) et `api` (core + cliN) |
 | Solution 2 : API `cliN` incluant `common` | Un seul conteneur `api` (core + common + cliN), activé par une surcharge Compose |
 | Front : composants `core` et un front final par client | `@archi/core-ui` fournit la coquille, l'appel d'API et l'écran commun ; chaque client ajoute son écran et sa feuille CSS |
+| Un point d'entrée unique, indépendant du client et de la solution | Une passerelle nginx dédiée (`gateway`) distribue `/api/common/`, `/api/` et `/` ; le front ne fait que servir la SPA |
 | Aucun code d'un autre client livré | Le code client n'entre dans le build que par un contexte nommé : le build de cli1 ne voit jamais `cli2/` |
 
 Chaque réponse d'API indique `served_by` (l'API qui a répondu) et `modules_loaded` (les modules présents), et l'interface les affiche. On voit ainsi directement la différence entre les deux solutions.
@@ -46,6 +47,7 @@ poc-1-socle-n-produits/
 ├── socle/                              # futur dépôt « socle », lisible par tous les clients
 │   ├── compose.yaml                    # composition de base (name: poc-1-socle-n-produits)
 │   ├── compose-standalone.yaml         # surcharge de la solution 2
+│   ├── gateway/default.conf            # passerelle : routes vers front et API
 │   ├── backend/
 │   │   ├── Dockerfile                  # image d'API, contexte nommé « client » facultatif
 │   │   ├── host/                       # application Laravel hôte (squelette minimal)
@@ -54,7 +56,7 @@ poc-1-socle-n-produits/
 │   │       └── common/                 # archi/common : GET /api/common/hello
 │   └── frontend/
 │       ├── Dockerfile                  # image du front, contexte nommé « client »
-│       ├── nginx/default.conf.template # service de la SPA et relais /api
+│       ├── nginx/default.conf          # service de la SPA (aucun relais)
 │       └── packages/core-ui/           # @archi/core-ui
 ├── cli1/                               # futur dépôt « cli1 »
 │   ├── compose-cli1.yaml               # paramètres du client 1
@@ -216,15 +218,16 @@ Le Dockerfile du backend déclare une étape vide `FROM scratch AS client`. Le c
 
 ## 4. Déploiement : solution 1 et solution 2
 
-Le navigateur ne parle qu'au conteneur `front`. Son nginx sert l'application React et relaie les chemins d'API vers deux noms fixes :
+Le navigateur ne parle qu'à la **passerelle** (`gateway`), un nginx dédié et seul service publié. Elle distribue les requêtes vers trois noms fixes ; le front ne fait que servir l'application React ([ADR 0011](docs/adr/0011-passerelle-nginx-dediee.md)).
 
 | Chemin | Destination |
 |---|---|
 | `/api/common/` | `api-common:8000` |
-| `/api/${CLIENT}/` | `api:8000` |
-| autre `/api/...` (par exemple l'API d'un autre client) | 404 |
+| `/api/` | `api:8000` ; une route inconnue de l'API du client (par exemple l'API d'un autre client) donne un 404 Laravel |
+| `/` | `front:8080` (SPA, avec repli sur `index.html`) |
+| `/healthz` | réponse directe de la passerelle (sonde) |
 
-Ces chemins se lisent dans [`socle/frontend/nginx/default.conf.template`](socle/frontend/nginx/default.conf.template).
+Ces routes se lisent dans [`socle/gateway/default.conf`](socle/gateway/default.conf). Les noms sont résolus à chaque requête (`resolver 127.0.0.11`) : la passerelle n'a besoin d'aucun ordre de démarrage et suit les redémarrages des services.
 
 ### Solution 1 : API séparées
 
@@ -248,15 +251,17 @@ flowchart LR
     navigateur(["Navigateur"]):::person
 
     subgraph projet["Projet poc-1-socle-n-produits (solution 1, client cli1)"]
+        gateway["gateway :8080<br/>nginx"]:::gateway
         front["front :8080<br/>nginx + SPA cli1"]:::app
         api_common["api-common :8000<br/>core + common"]:::app
         api["api :8000<br/>core + cli1"]:::app
     end
     class projet level1
 
-    navigateur -->|"HTTP 127.0.0.1:8080"| front
-    front -->|"HTTP /api/common/"| api_common
-    front -->|"HTTP /api/cli1/"| api
+    navigateur -->|"HTTP 127.0.0.1:8080"| gateway
+    gateway -->|"HTTP /"| front
+    gateway -->|"HTTP /api/common/"| api_common
+    gateway -->|"HTTP /api/"| api
 ```
 
 ### Solution 2 : API du client incluant common
@@ -267,7 +272,7 @@ La surcharge `socle/compose-standalone.yaml` :
 - construit `api` avec `COMMON=true` ;
 - donne à `api` l'**alias réseau `api-common`**.
 
-La configuration nginx du front est donc identique dans les deux solutions.
+La configuration de la passerelle est donc identique dans les deux solutions.
 
 ```mermaid
 flowchart LR
@@ -289,13 +294,15 @@ flowchart LR
     navigateur(["Navigateur"]):::person
 
     subgraph projet["Projet poc-1-socle-n-produits (solution 2, client cli1)"]
+        gateway["gateway :8080<br/>nginx"]:::gateway
         front["front :8080<br/>nginx + SPA cli1"]:::app
         api["api :8000, alias api-common<br/>core + common + cli1"]:::app
     end
     class projet level1
 
-    navigateur -->|"HTTP 127.0.0.1:8080"| front
-    front -->|"HTTP /api/common/ et /api/cli1/"| api
+    navigateur -->|"HTTP 127.0.0.1:8080"| gateway
+    gateway -->|"HTTP /"| front
+    gateway -->|"HTTP /api/common/ et /api/"| api
 ```
 
 ## 5. Déroulé d'une requête
@@ -305,24 +312,28 @@ Exemple de l'écran « Espace commun » du client 1 en solution 1. En solution 2
 ```mermaid
 sequenceDiagram
     participant navigateur as Navigateur
+    participant gateway as gateway (nginx :8080)
     participant front as front (nginx :8080)
     participant api_common as api-common (:8000)
 
-    navigateur->>front: GET /
-    front-->>navigateur: index.html + SPA cli1
-    navigateur->>front: GET /api/common/hello
-    front->>api_common: GET /api/common/hello
-    api_common-->>front: 200 JSON
-    front-->>navigateur: { module: common, served_by: api-common, modules_loaded: [core, common] }
+    navigateur->>gateway: GET /
+    gateway->>front: GET /
+    front-->>gateway: index.html + SPA cli1
+    gateway-->>navigateur: index.html + SPA cli1
+    navigateur->>gateway: GET /api/common/hello
+    gateway->>api_common: GET /api/common/hello
+    api_common-->>gateway: 200 JSON
+    gateway-->>navigateur: { module: common, served_by: api-common, modules_loaded: [core, common] }
 ```
 
 ## 6. Composition Docker
 
 | Fichier | Dépôt | Rôle |
 |---|---|---|
-| [`socle/compose.yaml`](socle/compose.yaml) | socle | `name: poc-1-socle-n-produits` ; services `front`, `api-common`, `api` et leur durcissement |
-| [`cli1/compose-cli1.yaml`](cli1/compose-cli1.yaml), [`cli2/compose-cli2.yaml`](cli2/compose-cli2.yaml) | cliN | Contextes nommés `client`, `CLIENT=cliN`, `APP_NAME=api-cliN` |
+| [`socle/compose.yaml`](socle/compose.yaml) | socle | `name: poc-1-socle-n-produits` ; services `gateway`, `front`, `api-common`, `api` et leur durcissement |
+| [`cli1/compose-cli1.yaml`](cli1/compose-cli1.yaml), [`cli2/compose-cli2.yaml`](cli2/compose-cli2.yaml) | cliN | Contextes nommés `client`, `CLIENT=cliN` (build de l'API), `APP_NAME=api-cliN` |
 | [`socle/compose-standalone.yaml`](socle/compose-standalone.yaml) | socle | Solution 2 : `api-common` désactivé (profil `split`), `api` avec `COMMON=true` et alias `api-common` |
+| [`socle/gateway/default.conf`](socle/gateway/default.conf) | socle | Routes de la passerelle, montées en lecture seule |
 
 Valeurs de `COMPOSE_FILE`, depuis la racine du dépôt :
 
@@ -338,10 +349,10 @@ Compose résout les chemins relatifs depuis le répertoire du **premier** fichie
 **Durcissement** ([ADR 0009](docs/adr/0009-durcissement-des-conteneurs.md)) :
 
 - exécution sous un UID/GID arbitraire (`APP_UID`/`APP_GID`, 10001 par défaut) ;
-- `read_only: true`, avec des tmpfs (`mode=1777`) pour `/tmp`, `storage/framework/{views,cache}` et `/etc/nginx/conf.d` ;
-- limites CPU et mémoire : API 0,5 CPU / 256 Mio, front 0,25 CPU / 64 Mio ;
-- sondes de santé `curl`, présent dans les deux images (vérifié) : `/up` pour les API, `/` pour le front ;
-- seul le front est publié, et uniquement sur `127.0.0.1:8080` (modifiable avec `FRONT_PORT`).
+- `read_only: true`, avec des tmpfs pour `/tmp` et, pour les API, `storage/framework/{views,cache}` (`mode=1777`) ;
+- limites CPU et mémoire : API 0,5 CPU / 256 Mio, front et passerelle 0,25 CPU / 64 Mio ;
+- sondes de santé `curl`, présent dans les images (vérifié) : `/up` pour les API, `/` pour le front, `/healthz` pour la passerelle ;
+- seule la passerelle est publiée, et uniquement sur `127.0.0.1:8080` (modifiable avec `HTTP_PORT`).
 
 Images de base, vérifiées le 2026-10-08 :
 
@@ -350,7 +361,7 @@ Images de base, vérifiées le 2026-10-08 :
 | API | `dunglas/frankenphp:1.13.0-php8.5-alpine` (PHP 8.5.11) |
 | Composer, au build | `composer:2.10.3` |
 | Build du front | `node:24.21.0-alpine` |
-| Service du front | `nginxinc/nginx-unprivileged:1.30.5-alpine` |
+| Service du front et passerelle | `nginxinc/nginx-unprivileged:1.30.5-alpine` |
 
 ## 7. Utilisation
 
@@ -375,7 +386,8 @@ L'interface est servie sur http://localhost:8080. Contrôles attendus :
 |---|---|
 | Solution 1 | `/api/common/hello` est servi par `api-common`, `/api/cli1/hello` par `api-cli1` |
 | Solution 2 | Les deux réponses sont servies par `api-cli1`, avec `modules_loaded = [core, cli1, common]` |
-| API d'un autre client | `curl localhost:8080/api/cli2/hello` sur un déploiement cli1 → `404` |
+| API d'un autre client | `curl localhost:8080/api/cli2/hello` sur un déploiement cli1 → `404` (émis par Laravel) |
+| Passerelle | `curl localhost:8080/healthz` → `ok` ; le front n'est pas publié |
 | Isolation | `docker compose exec api ls /app/vendor/archi` → `cli1 common core` (solution 2) ; jamais `cli2` |
 | Durcissement | `docker compose exec api id` → `uid=10001` ; `touch /app/x` → `Read-only file system` |
 
@@ -405,6 +417,7 @@ L'interface est servie sur http://localhost:8080. Contrôles attendus :
 | [0005](docs/adr/0005-deux-topologies-par-surcharge-compose.md) | Deux topologies de déploiement, sélectionnées par une surcharge Compose |
 | [0006](docs/adr/0006-frankenphp.md) | FrankenPHP comme serveur des API Laravel |
 | [0007](docs/adr/0007-front-core-ui-et-css-par-client.md) | Front : composants partagés, DOM unique, une feuille CSS par client |
-| [0008](docs/adr/0008-nginx-du-front-en-reverse-proxy.md) | nginx du front en reverse proxy des API |
+| [0008](docs/adr/0008-nginx-du-front-en-reverse-proxy.md) | ~~nginx du front en reverse proxy des API~~ (remplacé par 0011) |
 | [0009](docs/adr/0009-durcissement-des-conteneurs.md) | Durcissement des conteneurs |
 | [0010](docs/adr/0010-resolution-des-dependances-au-build.md) | Résolution des dépendances au build (compromis du POC) |
+| [0011](docs/adr/0011-passerelle-nginx-dediee.md) | Passerelle nginx dédiée en point d'entrée, le front ne relaie plus les API |

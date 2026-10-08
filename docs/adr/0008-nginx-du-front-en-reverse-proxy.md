@@ -1,6 +1,6 @@
 # ADR 0008 : nginx du front en reverse proxy des API
 
-- **Statut** : accepté
+- **Statut** : remplacé par l'[ADR 0011](0011-passerelle-nginx-dediee.md) (2026-10-08) : le front ne relaie plus les API, une passerelle nginx dédiée distribue les requêtes.
 - **Date** : 2026-10-08
 - **Décideurs** : responsable du POC
 
