@@ -1,0 +1,23 @@
+{
+    "name": "archi/cli1",
+    "description": "Services spécifiques au client cli1.",
+    "type": "library",
+    "version": "0.1.0",
+    "license": "proprietary",
+    "require": {
+        "php": "^8.3",
+        "archi/core": "^0.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Archi\\Cli1\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Archi\\Cli1\\Cli1ServiceProvider"
+            ]
+        }
+    }
+}
