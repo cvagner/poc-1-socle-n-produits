@@ -366,6 +366,8 @@ make down
 
 Une seule combinaison est déployée à la fois : `make up` repart de zéro (`down`, puis `up --build --wait`). `down` utilise `--profile "*"` pour retirer aussi `api-common`, que la solution 2 désactive par profil. Il passe donc inaperçu d'un simple `down`.
 
+Le Makefile calcule aussi `CLIENT_REV`, une empreinte des sources du client, et la passe en argument de build. C'est un contournement : sans elle, le cache de Compose ignore les modifications d'un client et l'image garde une ancienne version ([ADR 0004](docs/adr/0004-une-image-par-cible.md)). Si vous lancez `docker compose` sans passer par `make`, exportez `CLIENT_REV` vous-même ou ajoutez `--no-cache` au build.
+
 L'interface est servie sur http://localhost:8080. Contrôles attendus :
 
 | Contrôle | Résultat attendu |

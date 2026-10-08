@@ -23,6 +23,14 @@ ARG CLIENT=
 ENV COMPOSER_HOME=/tmp/composer
 
 COPY packages/ /src/packages/
+
+# Contournement : avec Compose (constaté en v5.6.0, BuildKit v0.33.1), le cache
+# de COPY --from=client ignore les modifications du contexte nommé et l'image
+# garderait une ancienne version du paquet client. CLIENT_REV, empreinte des
+# sources du client calculée par le Makefile, invalide le cache quand elles
+# changent (cf. ADR 0004).
+ARG CLIENT_REV=
+RUN echo "Sources client : ${CLIENT_REV:-non renseignée}"
 COPY --from=client / /src/packages/client/
 COPY host/ /src/host/
 WORKDIR /src/host

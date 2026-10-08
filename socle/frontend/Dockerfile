@@ -8,6 +8,13 @@ FROM node:24.21.0-alpine AS build
 WORKDIR /src
 COPY package.json ./
 COPY packages/ packages/
+
+# Contournement : avec Compose (constaté en v5.6.0, BuildKit v0.33.1), le cache
+# de COPY --from=client ignore les modifications du contexte nommé. CLIENT_REV,
+# empreinte des sources du client calculée par le Makefile, invalide le cache
+# quand elles changent (cf. ADR 0004).
+ARG CLIENT_REV=
+RUN echo "Sources client : ${CLIENT_REV:-non renseignée}"
 COPY --from=client / apps/client/
 RUN npm install --no-audit --no-fund
 RUN npm run build --workspace apps/client

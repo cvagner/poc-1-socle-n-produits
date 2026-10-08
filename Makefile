@@ -6,6 +6,11 @@ SOLUTION ?= 1
 
 export COMPOSE_FILE := socle/compose.yaml:$(CLIENT)/compose-$(CLIENT).yaml$(if $(filter 2,$(SOLUTION)),:socle/compose-standalone.yaml)
 
+# Empreinte des sources du client, passée en argument de build : le cache de
+# Compose ignore les modifications des contextes nommés (additional_contexts),
+# cette valeur l'invalide quand le client change (cf. ADR 0004).
+export CLIENT_REV := $(shell find $(CLIENT) -type f -not -path '*/node_modules/*' -not -path '*/dist/*' -exec sha256sum {} + | sort | sha256sum | cut -c1-12)
+
 .PHONY: up down ps logs config test
 
 # Une seule combinaison déployée à la fois : up repart de zéro (down).

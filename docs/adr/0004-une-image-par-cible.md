@@ -45,3 +45,14 @@ Les contextes nommés sont déclarés dans `cliN/compose-cliN.yaml` (`client: ..
 - Contrôle : `docker compose exec api ls /app/vendor/archi` liste au plus `cli1 common core` pour cli1. Vérifié sur les 4 combinaisons.
 - Les images sont nommées par Compose `poc-1-socle-n-produits-<service>` et partagées entre combinaisons. `make up` reconstruit systématiquement (`--build`). Un nommage par cible (`api-cli1`, `api-cli1-standalone`…) sera nécessaire hors POC, pour publier les images.
 - Construire `api` sans contexte `client` donne une API core seule. Ce n'est pas une erreur, mais une cible sans intérêt.
+- **Défaut constaté et contourné (2026-10-08)** : avec Compose v5.6.0 et BuildKit v0.33.1, `docker compose build` ne voit pas les modifications des fichiers d'un contexte nommé. L'étape `COPY --from=client` reste en cache, et l'image garde l'ancienne version du paquet client. Ce défaut a été découvert à l'ajout de la route `GET /api/cli2/catalogue`.
+  - Il est reproductible : trois modifications successives, toutes ignorées.
+  - Il n'est corrigé ni par `COMPOSE_BAKE=false`, ni par des noms de contexte distincts.
+  - `docker buildx build` direct, lui, prend bien les modifications en compte.
+  - Le contenu transmis est pourtant à jour : c'est la clé de cache qui l'ignore.
+- **Contournement** :
+  - le Makefile calcule `CLIENT_REV`, une empreinte sha256 des fichiers de `cliN/` (hors `node_modules/` et `dist/`) ;
+  - `socle/compose.yaml` la transmet en argument de build à `front` et `api` ;
+  - les Dockerfiles la consomment par un `RUN` placé juste avant `COPY --from=client`, ce qui invalide le cache dès que le client change.
+
+  Vérifié : une modification d'un fichier du client se retrouve dans le conteneur après `make up`. Hors Makefile, il faut exporter `CLIENT_REV` ou construire avec `--no-cache`. Le contournement sera à retirer quand le défaut sera corrigé, ou quand le code client viendra d'un registre ([ADR 0010](0010-resolution-des-dependances-au-build.md)).

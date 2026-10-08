@@ -29,6 +29,10 @@ services:
     build:
       context: ./frontend
       # additional_contexts.client : fourni par cliN/compose-cliN.yaml
+      args:
+        # Empreinte des sources du client, calculée par le Makefile : sans
+        # elle, le cache de Compose ignore les modifications du client.
+        CLIENT_REV: ${CLIENT_REV:-}
     user: "${APP_UID:-10001}:${APP_GID:-10001}"
     read_only: true
     tmpfs:
@@ -70,4 +74,7 @@ services:
       context: ./backend
       args:
         COMMON: "false"
+        # Empreinte des sources du client, calculée par le Makefile : sans
+        # elle, le cache de Compose ignore les modifications du client.
+        CLIENT_REV: ${CLIENT_REV:-}
         # CLIENT et additional_contexts.client : fournis par cliN/compose-cliN.yaml
