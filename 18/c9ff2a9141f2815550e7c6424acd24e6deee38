@@ -1,0 +1,30 @@
+socle/backend/Dockerfile
+  s_45e6e8700e3d89::t_6a2e770860210a 26-33
+Makefile
+  s_45e6e8700e3d89::t_d1185c146af819 9-13
+socle/compose.yaml
+  s_45e6e8700e3d89::t_d2664e1b839db4 77-79
+  s_45e6e8700e3d89::t_918c377e696b11 32-35
+socle/frontend/Dockerfile
+  s_45e6e8700e3d89::t_b8efca06dd04fa 11-17
+README.md
+  s_45e6e8700e3d89::t_36524db3dae5bc 367-368
+docs/adr/0004-une-image-par-cible.md
+  s_45e6e8700e3d89::t_90d3c35307352d 48-58
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "18c9ff2a9141f2815550e7c6424acd24e6deee38",
+  "prompts": {},
+  "sessions": {
+    "s_45e6e8700e3d89": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98b417ca-9542-4336-a95f-6bf2159a9c48",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Charles-Henry Vagner <cva@atolcd.com>"
+    }
+  }
+}
