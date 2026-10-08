@@ -1,0 +1,23 @@
+.gitignore
+  s_45e6e8700e3d89::t_f5746f7f4f03d8 1-4
+docs/plan_initial.md
+  s_45e6e8700e3d89::t_63f93569e25c06 1-219
+docs/prompt_initial.md
+  s_45e6e8700e3d89::t_cf79d551400a13 1-30
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "e99673974edafa376c4e7a3026bb668b98872a07",
+  "prompts": {},
+  "sessions": {
+    "s_45e6e8700e3d89": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98b417ca-9542-4336-a95f-6bf2159a9c48",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Charles-Henry Vagner <cva@atolcd.com>"
+    }
+  }
+}
