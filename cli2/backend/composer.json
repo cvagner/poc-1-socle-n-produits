@@ -1,0 +1,23 @@
+{
+    "name": "archi/cli2",
+    "description": "Services spécifiques au client cli2.",
+    "type": "library",
+    "version": "0.1.0",
+    "license": "proprietary",
+    "require": {
+        "php": "^8.3",
+        "archi/core": "^0.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Archi\\Cli2\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Archi\\Cli2\\Cli2ServiceProvider"
+            ]
+        }
+    }
+}

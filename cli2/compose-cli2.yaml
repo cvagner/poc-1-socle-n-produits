@@ -1,0 +1,19 @@
+# Paramètres du client cli2, en complément de socle/compose.yaml.
+# Les chemins relatifs sont résolus depuis socle/ (répertoire du premier
+# fichier de la composition) : ../cli2 désigne donc ce répertoire.
+services:
+  front:
+    build:
+      additional_contexts:
+        client: ../cli2/frontend
+    environment:
+      CLIENT: cli2
+
+  api:
+    build:
+      args:
+        CLIENT: cli2
+      additional_contexts:
+        client: ../cli2/backend
+    environment:
+      APP_NAME: api-cli2

@@ -1,0 +1,130 @@
+/*
+ * Thème du client 2 : pastel.
+ * En-tête, puis menu horizontal juste en dessous, puis contenu et pied de
+ * page ; palette menthe, lavande et pêche.
+ */
+:root {
+  --c-bg: #fdf8f3;
+  --c-surface: #ffffff;
+  --c-text: #3d3a4b;
+  --c-muted: #7a7590;
+  --c-header-bg: #cdeee0;
+  --c-menu-bg: #e4dcf5;
+  --c-menu-active: #c9b8ee;
+  --c-peach: #ffd9c2;
+  --c-border: #ece3f7;
+}
+
+body {
+  background: var(--c-bg);
+  color: var(--c-text);
+}
+
+.app-shell {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto 1fr auto;
+  grid-template-areas:
+    'header'
+    'menu'
+    'main'
+    'footer';
+  min-height: 100vh;
+}
+
+.app-header {
+  grid-area: header;
+  padding: 1.5rem 2rem;
+  background: var(--c-header-bg);
+}
+
+.app-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.app-menu {
+  grid-area: menu;
+  padding: 0 2rem;
+  background: var(--c-menu-bg);
+}
+
+.app-menu ul {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.app-menu a {
+  padding: 0.75rem 1.25rem;
+  color: var(--c-text);
+  border-radius: 999px;
+  margin: 0.5rem 0;
+}
+
+.app-menu a:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.app-menu a.is-active {
+  background: var(--c-menu-active);
+  font-weight: 600;
+}
+
+.app-main {
+  grid-area: main;
+  padding: 2rem;
+}
+
+.app-footer {
+  grid-area: footer;
+  padding: 1rem 2rem;
+  color: var(--c-muted);
+  font-size: 0.875rem;
+  background: var(--c-peach);
+}
+
+.screen__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.screen__intro {
+  color: var(--c-muted);
+}
+
+.api-card {
+  max-width: 44rem;
+  padding: 1.5rem;
+  background: var(--c-surface);
+  border: 2px solid var(--c-border);
+  border-radius: 1rem;
+}
+
+.api-card__header {
+  margin-bottom: 1rem;
+}
+
+.api-card__method {
+  padding: 0.125rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: var(--c-header-bg);
+  border-radius: 999px;
+}
+
+.api-card__body dt {
+  color: var(--c-muted);
+}
+
+.api-card__tag {
+  display: inline-block;
+  margin-right: 0.375rem;
+  padding: 0 0.625rem;
+  font-size: 0.875rem;
+  background: var(--c-peach);
+  border-radius: 999px;
+}
+
+.api-card__status--error {
+  color: #b5485d;
+}
