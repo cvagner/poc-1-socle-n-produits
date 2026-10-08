@@ -8,7 +8,7 @@ Un **produit** est l'assemblage du socle et des spécifiques d'un client : `cli1
 - **Frontend** : React 19 (Vite), avec des composants communs et une application par client.
 - **Exécution** : Docker Compose, piloté par un Makefile minimal.
 
-L'expression de besoin initiale est dans [docs/prompt_initial.md](docs/prompt_initial.md), les plans de construction dans [docs/plan_00_initial.md](docs/plan_00_initial.md) (initial) et [docs/plan_01_gateway.md](docs/plan_01_gateway.md) (passerelle) et les décisions d'architecture dans [docs/adr/](docs/adr/).
+L'expression de besoin initiale est dans [docs/prompt_initial.md](docs/prompt_initial.md). Les plans de construction sont dans [docs/plan_00_initial.md](docs/plan_00_initial.md) (initial), [docs/plan_01_gateway.md](docs/plan_01_gateway.md) (passerelle) et [docs/plan_02_dev.md](docs/plan_02_dev.md) (mode développement), et les décisions d'architecture dans [docs/adr/](docs/adr/).
 
 ## Sommaire
 
@@ -47,6 +47,7 @@ poc-1-socle-n-produits/
 ├── socle/                              # futur dépôt « socle », lisible par tous les clients
 │   ├── compose.yaml                    # composition de base (name: poc-1-socle-n-produits)
 │   ├── compose-standalone.yaml         # surcharge de la solution 2
+│   ├── compose-dev.yaml                # surcharge du mode développement
 │   ├── gateway/default.conf            # passerelle : routes vers front et API
 │   ├── backend/
 │   │   ├── Dockerfile                  # image d'API, contexte nommé « client » facultatif
@@ -333,6 +334,7 @@ sequenceDiagram
 | [`socle/compose.yaml`](socle/compose.yaml) | socle | `name: poc-1-socle-n-produits` ; services `gateway`, `front`, `api-common`, `api` et leur durcissement |
 | [`cli1/compose-cli1.yaml`](cli1/compose-cli1.yaml), [`cli2/compose-cli2.yaml`](cli2/compose-cli2.yaml) | cliN | Contextes nommés `client`, `CLIENT=cliN` (build de l'API), `APP_NAME=api-cliN` |
 | [`socle/compose-standalone.yaml`](socle/compose-standalone.yaml) | socle | Solution 2 : `api-common` désactivé (profil `split`), `api` avec `COMMON=true` et alias `api-common` |
+| [`socle/compose-dev.yaml`](socle/compose-dev.yaml) | socle | Mode développement : front en serveur Vite (rechargement à chaud), sources PHP montées dans les API ; utilise `${CLIENT}` |
 | [`socle/gateway/default.conf`](socle/gateway/default.conf) | socle | Routes de la passerelle, montées en lecture seule |
 
 Valeurs de `COMPOSE_FILE`, depuis la racine du dépôt :
@@ -343,6 +345,8 @@ Valeurs de `COMPOSE_FILE`, depuis la racine du dépôt :
 | cli1 | 2 | `socle/compose.yaml:cli1/compose-cli1.yaml:socle/compose-standalone.yaml` |
 | cli2 | 1 | `socle/compose.yaml:cli2/compose-cli2.yaml` |
 | cli2 | 2 | `socle/compose.yaml:cli2/compose-cli2.yaml:socle/compose-standalone.yaml` |
+
+En mode développement, `:socle/compose-dev.yaml` s'ajoute en dernier, avec `CLIENT=cliN` dans l'environnement (le Makefile s'en charge).
 
 Compose résout les chemins relatifs depuis le répertoire du **premier** fichier, ici `socle/`. C'est pourquoi `compose-cliN.yaml` référence `../cliN/...`, ce qui correspond à un clone du dépôt client placé à côté du socle.
 
@@ -372,9 +376,16 @@ make up                          # cli1, solution 1 (valeurs par défaut)
 make up CLIENT=cli2              # cli2, solution 1
 make up CLIENT=cli1 SOLUTION=2   # cli1, solution 2
 make test CLIENT=cli1            # appelle /api/common/hello et /api/cli1/hello
+make up CLIENT=cli2 DEV=1        # cli2, solution 1, mode développement
 make ps | make logs | make config
 make down
 ```
+
+**Mode développement** (`DEV=1`, [ADR 0012](docs/adr/0012-mode-developpement-par-surcharge.md)) :
+
+- le front est servi par Vite avec rechargement à chaud, toujours derrière la passerelle sur http://localhost:8080. Les modifications de `cliN/frontend` (sources, `index.html`, `vite.config.js`) et de `socle/frontend/packages/core-ui/src` s'affichent sans reconstruction, quel que soit le mode d'enregistrement de l'éditeur (les montages se font par répertoire) ;
+- les API lisent directement `socle/backend/packages/{core,common}` et `cliN/backend`, montés en lecture seule. Une modification PHP, y compris une nouvelle classe, est prise en compte en moins de 3 s ;
+- repasser par `make up DEV=1` après une modification de dépendance (`composer.json`, `package.json`), un nouveau paquet ou fournisseur de service, ou l'hôte Laravel.
 
 Une seule combinaison est déployée à la fois : `make up` repart de zéro (`down`, puis `up --build --wait`). `down` utilise `--profile "*"` pour retirer aussi `api-common`, que la solution 2 désactive par profil. Il passe donc inaperçu d'un simple `down`.
 
@@ -402,7 +413,6 @@ L'interface est servie sur http://localhost:8080. Contrôles attendus :
 - **Assemblage** : un contexte nommé peut être une URL git. Un dépôt client peut aussi récupérer le socle en sous-module ou en clone voisin, pour garder les chemins `../cliN`.
 - **Points ouverts** :
   - versionner des fichiers lock par cible ([ADR 0010](docs/adr/0010-resolution-des-dependances-au-build.md)) ;
-  - proposer un mode développement (serveur Vite et rechargement à chaud), absent du POC ;
   - nommer et étiqueter les images, aujourd'hui `poc-1-socle-n-produits-<service>` reconstruites à chaque `make up` ;
   - écrire des tests automatisés.
 
@@ -421,3 +431,4 @@ L'interface est servie sur http://localhost:8080. Contrôles attendus :
 | [0009](docs/adr/0009-durcissement-des-conteneurs.md) | Durcissement des conteneurs |
 | [0010](docs/adr/0010-resolution-des-dependances-au-build.md) | Résolution des dépendances au build (compromis du POC) |
 | [0011](docs/adr/0011-passerelle-nginx-dediee.md) | Passerelle nginx dédiée en point d'entrée, le front ne relaie plus les API |
+| [0012](docs/adr/0012-mode-developpement-par-surcharge.md) | Mode développement par surcharge Compose (Vite HMR, sources PHP montées) |
