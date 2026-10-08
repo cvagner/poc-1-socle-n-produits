@@ -1,0 +1,39 @@
+socle/frontend/packages/core-ui/src/base.css
+  s_45e6e8700e3d89::t_fedd517d2fe39f 1-49
+socle/frontend/Dockerfile
+  s_45e6e8700e3d89::t_a5d6188a32f6dc 1-19
+socle/frontend/.dockerignore
+  s_45e6e8700e3d89::t_88d97e086ad154 1-3
+socle/frontend/package.json
+  s_45e6e8700e3d89::t_565ba6707372c4 1-9
+socle/frontend/packages/core-ui/src/index.jsx
+  s_45e6e8700e3d89::t_3301361dd8152f 1-4
+socle/frontend/nginx/default.conf.template
+  s_45e6e8700e3d89::t_ea5fb13ec6b7a8 1-28
+socle/frontend/packages/core-ui/src/AppShell.jsx
+  s_45e6e8700e3d89::t_c2697aeb764053 1-42
+socle/frontend/packages/core-ui/src/useApi.js
+  s_45e6e8700e3d89::t_aa0f206220ebe0 1-27
+socle/frontend/packages/core-ui/src/CommonScreen.jsx
+  s_45e6e8700e3d89::t_99c66e137e0d7c 1-17
+socle/frontend/packages/core-ui/src/ApiCard.jsx
+  s_45e6e8700e3d89::t_396d9f390a3050 1-34
+socle/frontend/packages/core-ui/package.json
+  s_45e6e8700e3d89::t_24e9d65441ac18 1-18
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "677eb085a6a4837a77bc084c35e20e6d0848805a",
+  "prompts": {},
+  "sessions": {
+    "s_45e6e8700e3d89": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98b417ca-9542-4336-a95f-6bf2159a9c48",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Charles-Henry Vagner <cva@atolcd.com>"
+    }
+  }
+}
