@@ -1,0 +1,73 @@
+# Composition de base, commune à tous les clients et aux deux solutions.
+# À compléter par cliN/compose-cliN.yaml, plus socle/compose-standalone.yaml
+# pour la solution 2. Les chemins relatifs sont résolus depuis socle/.
+#   Solution 1 : COMPOSE_FILE=socle/compose.yaml:cli1/compose-cli1.yaml
+#   Solution 2 : COMPOSE_FILE=socle/compose.yaml:cli1/compose-cli1.yaml:socle/compose-standalone.yaml
+name: poc-1-socle-n-produits
+
+x-api: &api
+  user: "${APP_UID:-10001}:${APP_GID:-10001}"
+  read_only: true
+  tmpfs:
+    - /tmp
+    - /app/storage/framework/views:mode=1777
+    - /app/storage/framework/cache:mode=1777
+  deploy:
+    resources:
+      limits:
+        cpus: "0.5"
+        memory: 256M
+  healthcheck:
+    test: ["CMD", "curl", "-fsS", "-o", "/dev/null", "http://localhost:8000/up"]
+    interval: 10s
+    timeout: 3s
+    retries: 5
+    start_period: 10s
+
+services:
+  front:
+    build:
+      context: ./frontend
+      # additional_contexts.client : fourni par cliN/compose-cliN.yaml
+    user: "${APP_UID:-10001}:${APP_GID:-10001}"
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /etc/nginx/conf.d:mode=1777
+    ports:
+      - "127.0.0.1:${FRONT_PORT:-8080}:8080"
+    depends_on:
+      api-common:
+        condition: service_healthy
+      api:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 64M
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "-o", "/dev/null", "http://localhost:8080/"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+
+  # API du tronc commun (solution 1 uniquement)
+  api-common:
+    <<: *api
+    build:
+      context: ./backend
+      args:
+        COMMON: "true"
+    environment:
+      APP_NAME: api-common
+
+  # API du client : son module, plus common en solution 2
+  api:
+    <<: *api
+    build:
+      context: ./backend
+      args:
+        COMMON: "false"
+        # CLIENT et additional_contexts.client : fournis par cliN/compose-cliN.yaml

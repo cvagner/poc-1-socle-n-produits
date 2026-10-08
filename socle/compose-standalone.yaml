@@ -1,0 +1,21 @@
+# Solution 2 : l'API du client inclut le module common.
+# - api-common n'est plus démarré (profil jamais activé) ;
+# - api embarque archi/common et répond aussi au nom api-common, si bien que
+#   la configuration nginx du front reste inchangée.
+services:
+  api-common:
+    profiles: [split]
+
+  api:
+    build:
+      args:
+        COMMON: "true"
+    networks:
+      default:
+        aliases:
+          - api-common
+
+  front:
+    depends_on: !override
+      api:
+        condition: service_healthy
