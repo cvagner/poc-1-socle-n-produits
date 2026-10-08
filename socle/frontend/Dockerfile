@@ -20,7 +20,6 @@ RUN npm install --no-audit --no-fund
 RUN npm run build --workspace apps/client
 
 FROM nginxinc/nginx-unprivileged:1.30.5-alpine
-# Rendu par envsubst au démarrage dans /etc/nginx/conf.d (tmpfs en lecture seule)
-COPY nginx/default.conf.template /etc/nginx/templates/default.conf.template
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /src/apps/client/dist /usr/share/nginx/html
 EXPOSE 8080

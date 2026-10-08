@@ -25,6 +25,30 @@ x-api: &api
     start_period: 10s
 
 services:
+  # Point d'entrée unique : distribue vers front, api-common et api (ADR 0011)
+  gateway:
+    image: nginxinc/nginx-unprivileged:1.30.5-alpine
+    volumes:
+      - ./gateway/default.conf:/etc/nginx/conf.d/default.conf:ro
+    user: "${APP_UID:-10001}:${APP_GID:-10001}"
+    read_only: true
+    tmpfs:
+      - /tmp
+    ports:
+      - "127.0.0.1:${HTTP_PORT:-8080}:8080"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 64M
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "-o", "/dev/null", "http://localhost:8080/healthz"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+
+  # Sert uniquement l'appli React du client
   front:
     build:
       context: ./frontend
@@ -37,14 +61,6 @@ services:
     read_only: true
     tmpfs:
       - /tmp
-      - /etc/nginx/conf.d:mode=1777
-    ports:
-      - "127.0.0.1:${FRONT_PORT:-8080}:8080"
-    depends_on:
-      api-common:
-        condition: service_healthy
-      api:
-        condition: service_healthy
     deploy:
       resources:
         limits:

@@ -6,8 +6,6 @@ services:
     build:
       additional_contexts:
         client: ../cli1/frontend
-    environment:
-      CLIENT: cli1
 
   api:
     build:

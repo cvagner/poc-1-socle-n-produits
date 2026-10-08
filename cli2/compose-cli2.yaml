@@ -6,8 +6,6 @@ services:
     build:
       additional_contexts:
         client: ../cli2/frontend
-    environment:
-      CLIENT: cli2
 
   api:
     build:
