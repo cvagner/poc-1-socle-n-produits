@@ -3,7 +3,7 @@
     "name": "archi/host",
     "type": "project",
     "description": "Application Laravel hôte : assemble archi/core et les modules choisis au build (archi/common, archi/cliN).",
-    "license": "proprietary",
+    "license": "MIT",
     "repositories": [
         {
             "type": "path",

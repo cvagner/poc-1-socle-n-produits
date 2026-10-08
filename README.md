@@ -21,6 +21,7 @@ L'expression de besoin initiale est dans [docs/prompt_initial.md](docs/prompt_in
 7. [Utilisation](#7-utilisation)
 8. [Trajectoire après le POC](#8-trajectoire-après-le-poc)
 9. [Décisions d'architecture](#9-décisions-darchitecture)
+10. [Licence](#10-licence)
 
 ## 1. Ce que le POC démontre
 
@@ -432,3 +433,7 @@ L'interface est servie sur http://localhost:8080. Contrôles attendus :
 | [0010](docs/adr/0010-resolution-des-dependances-au-build.md) | Résolution des dépendances au build (compromis du POC) |
 | [0011](docs/adr/0011-passerelle-nginx-dediee.md) | Passerelle nginx dédiée en point d'entrée, le front ne relaie plus les API |
 | [0012](docs/adr/0012-mode-developpement-par-surcharge.md) | Mode développement par surcharge Compose (Vite HMR, sources PHP montées) |
+
+## 10. Licence
+
+Ce projet est distribué sous licence MIT : voir [LICENSE](LICENSE).

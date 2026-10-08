@@ -3,7 +3,7 @@
     "description": "Socle technique partagé : registre des modules, fournisseur de module et format de réponse. Bibliothèque, non déployée seule.",
     "type": "library",
     "version": "0.1.0",
-    "license": "proprietary",
+    "license": "MIT",
     "require": {
         "php": "^8.3",
         "laravel/framework": "^13.0"

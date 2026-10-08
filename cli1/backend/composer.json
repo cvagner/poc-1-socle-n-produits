@@ -3,7 +3,7 @@
     "description": "Services spécifiques au client cli1.",
     "type": "library",
     "version": "0.1.0",
-    "license": "proprietary",
+    "license": "MIT",
     "require": {
         "php": "^8.3",
         "archi/core": "^0.1"
