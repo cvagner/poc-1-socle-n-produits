@@ -1,0 +1,85 @@
+socle/backend/packages/common/routes/api.php
+  s_45e6e8700e3d89::t_61ebfd5997d0ee 1-7
+socle/backend/host/.gitignore
+  s_45e6e8700e3d89::t_2a84dd1e9b1d10 2-4
+  s_45e6e8700e3d89::t_d8ad657877f002 1
+socle/backend/host/composer.json
+  s_45e6e8700e3d89::t_4930243c568dd1 3-33
+  s_45e6e8700e3d89::t_4bb7a0d4087350 1-2
+  s_45e6e8700e3d89::t_95b1bf74dc005b 34-36
+  s_45e6e8700e3d89::t_8cd4b3e2b61827 37
+socle/backend/host/bootstrap/app.php
+  s_45e6e8700e3d89::t_ff3496d14d4c58 8-9
+  s_45e6e8700e3d89::t_2a628f3dd1d2f8 5-7
+  s_45e6e8700e3d89::t_7639f2c4dc9071 10-12
+  s_45e6e8700e3d89::t_dd7e39618205a8 1-4,13-21
+socle/backend/packages/core/composer.json
+  s_45e6e8700e3d89::t_ca0577d37be2ee 1-23
+socle/backend/packages/core/src/ModuleServiceProvider.php
+  s_45e6e8700e3d89::t_dfe58ff0159cb4 1-28
+socle/backend/Dockerfile
+  s_45e6e8700e3d89::t_45a6aa1a55c75b 1-52
+socle/backend/packages/common/composer.json
+  s_45e6e8700e3d89::t_a04fec74bb5980 1-23
+socle/backend/packages/common/src/CommonServiceProvider.php
+  s_45e6e8700e3d89::t_fd56546dc6905c 1-18
+socle/backend/packages/core/src/ModuleRegistry.php
+  s_45e6e8700e3d89::t_87241b2ecb2bb8 1-27
+socle/backend/.dockerignore
+  s_45e6e8700e3d89::t_80978762c82086 1-3
+socle/backend/packages/core/src/CoreServiceProvider.php
+  s_45e6e8700e3d89::t_540cf88a53f1ba 1-17
+socle/backend/host/bootstrap/providers.php
+  s_45e6e8700e3d89::t_c9d69852b490e5 4-5
+  s_45e6e8700e3d89::t_322eb3d610b3ce 1-3
+socle/backend/packages/core/src/Http/ApiResponse.php
+  s_45e6e8700e3d89::t_a7f432b2507702 1-25
+socle/backend/host/artisan
+  s_45e6e8700e3d89::t_bec83cfe812085 1-18
+socle/backend/host/bootstrap/cache/.gitignore
+  s_45e6e8700e3d89::t_423bc5cc7f2c2a 1-2
+socle/backend/host/config/app.php
+  s_45e6e8700e3d89::t_bb037e57ee2723 1-126
+socle/backend/host/public/index.php
+  s_45e6e8700e3d89::t_e7fd4d6f79c0ed 1-20
+socle/backend/host/public/robots.txt
+  s_45e6e8700e3d89::t_4953f08173104b 1-2
+socle/backend/host/storage/app/.gitignore
+  s_45e6e8700e3d89::t_a00e64053daccb 1-4
+socle/backend/host/storage/app/private/.gitignore
+  s_45e6e8700e3d89::t_7a4fda9118efae 1-2
+socle/backend/host/storage/app/public/.gitignore
+  s_45e6e8700e3d89::t_ef988c6d5af65a 1-2
+socle/backend/host/storage/framework/.gitignore
+  s_45e6e8700e3d89::t_b256c2e9635f68 1-10
+socle/backend/host/storage/framework/cache/.gitignore
+  s_45e6e8700e3d89::t_6f16c95b7605fe 1-4
+socle/backend/host/storage/framework/cache/data/.gitignore
+  s_45e6e8700e3d89::t_7327cdfbd4edba 1-2
+socle/backend/host/storage/framework/cache/locks/.gitignore
+  s_45e6e8700e3d89::t_544d7e3d3887c3 1-2
+socle/backend/host/storage/framework/sessions/.gitignore
+  s_45e6e8700e3d89::t_62c11748227f45 1-2
+socle/backend/host/storage/framework/testing/.gitignore
+  s_45e6e8700e3d89::t_b77484008f474f 1-2
+socle/backend/host/storage/framework/views/.gitignore
+  s_45e6e8700e3d89::t_bda24ea37d460b 1-2
+socle/backend/host/storage/logs/.gitignore
+  s_45e6e8700e3d89::t_3d7150d5649df5 1-2
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "fb1dcc6fd8ca59315dc8f12c1c9385c1b2805a68",
+  "prompts": {},
+  "sessions": {
+    "s_45e6e8700e3d89": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98b417ca-9542-4336-a95f-6bf2159a9c48",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Charles-Henry Vagner <cva@atolcd.com>"
+    }
+  }
+}
