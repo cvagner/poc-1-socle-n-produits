@@ -27,7 +27,7 @@ Le POC doit éclairer le futur découpage d'un écosystème en tronc commun et s
 
 ## Décision
 
-Option A. Les ADR sont rédigés en français, numérotés et rangés dans `docs/adr/`. Chacun comporte statut, date, contexte, options considérées, décision et conséquences. Le plan de construction initial est conservé dans `docs/plan_initial.md`.
+Option A. Les ADR sont rédigés en français, numérotés et rangés dans `docs/adr/`. Chacun comporte statut, date, contexte, options considérées, décision et conséquences. Les plans de construction sont conservés dans `docs/plan_NN_<sujet>.md` (`plan_00_initial.md`, `plan_01_gateway.md`…).
 
 ## Conséquences
 

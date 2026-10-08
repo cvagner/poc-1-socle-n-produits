@@ -8,7 +8,7 @@ Un **produit** est l'assemblage du socle et des spécifiques d'un client : `cli1
 - **Frontend** : React 19 (Vite), avec des composants communs et une application par client.
 - **Exécution** : Docker Compose, piloté par un Makefile minimal.
 
-L'expression de besoin initiale est dans [docs/prompt_initial.md](docs/prompt_initial.md), le plan de construction dans [docs/plan_initial.md](docs/plan_initial.md) et les décisions d'architecture dans [docs/adr/](docs/adr/).
+L'expression de besoin initiale est dans [docs/prompt_initial.md](docs/prompt_initial.md), les plans de construction dans [docs/plan_00_initial.md](docs/plan_00_initial.md) (initial) et [docs/plan_01_gateway.md](docs/plan_01_gateway.md) (passerelle) et les décisions d'architecture dans [docs/adr/](docs/adr/).
 
 ## Sommaire
 
@@ -42,7 +42,7 @@ Le POC tient dans un seul dépôt git, mais chaque répertoire de premier niveau
 ```
 poc-1-socle-n-produits/
 ├── Makefile  README.md                # liant du POC
-├── docs/                               # besoin initial, plan initial et ADR
+├── docs/                               # besoin initial, plans et ADR
 ├── socle/                              # futur dépôt « socle », lisible par tous les clients
 │   ├── compose.yaml                    # composition de base (name: poc-1-socle-n-produits)
 │   ├── compose-standalone.yaml         # surcharge de la solution 2
