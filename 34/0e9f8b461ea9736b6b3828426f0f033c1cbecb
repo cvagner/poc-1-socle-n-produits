@@ -1,0 +1,24 @@
+docs/plan_02_dev.md
+  s_45e6e8700e3d89::t_0b82c377cdeb11 1-135
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "340e9f8b461ea9736b6b3828426f0f033c1cbecb",
+  "prompts": {},
+  "humans": {
+    "h_2ce8ab7e68bb81": {
+      "author": "Charles-Henry Vagner <cva@atolcd.com>"
+    }
+  },
+  "sessions": {
+    "s_45e6e8700e3d89": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98b417ca-9542-4336-a95f-6bf2159a9c48",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Charles-Henry Vagner <cva@atolcd.com>"
+    }
+  }
+}
