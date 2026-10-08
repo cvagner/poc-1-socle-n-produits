@@ -1,0 +1,9 @@
+{
+  "name": "archi-frontend",
+  "private": true,
+  "description": "Workspace du socle front : @archi/core-ui + l'appli du client injectée au build dans apps/client.",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ]
+}
