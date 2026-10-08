@@ -1,0 +1,27 @@
+socle/gateway/default.conf
+  s_45e6e8700e3d89::t_94fa9973b23828 1-35
+socle/frontend/nginx/default.conf
+  s_45e6e8700e3d89::t_22fcb48a9a8769 1-2
+socle/compose-standalone.yaml
+  s_45e6e8700e3d89::t_b0e79123931fb7 4
+socle/compose.yaml
+  s_45e6e8700e3d89::t_90beabafc0025c 28-51
+socle/frontend/Dockerfile
+  s_45e6e8700e3d89::t_eb29dd9d610e89 23
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "a440c85e98e436cf8eff9e1a0f5d345ff7c52a37",
+  "prompts": {},
+  "sessions": {
+    "s_45e6e8700e3d89": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98b417ca-9542-4336-a95f-6bf2159a9c48",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Charles-Henry Vagner <cva@atolcd.com>"
+    }
+  }
+}
