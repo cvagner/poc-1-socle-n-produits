@@ -1,10 +1,12 @@
-# Usage : make up [CLIENT=cli1|cli2] [SOLUTION=1|2]
+# Usage : make up [CLIENT=cli1|cli2] [SOLUTION=1|2] [DEV=0|1]
 #   SOLUTION=1 : API common + API du client (séparées)
 #   SOLUTION=2 : API du client incluant common
-CLIENT   ?= cli1
+#   DEV=1      : mode développement (Vite HMR, sources PHP montées)
+export CLIENT ?= cli1
 SOLUTION ?= 1
+DEV      ?= 0
 
-export COMPOSE_FILE := socle/compose.yaml:$(CLIENT)/compose-$(CLIENT).yaml$(if $(filter 2,$(SOLUTION)),:socle/compose-standalone.yaml)
+export COMPOSE_FILE := socle/compose.yaml:$(CLIENT)/compose-$(CLIENT).yaml$(if $(filter 2,$(SOLUTION)),:socle/compose-standalone.yaml)$(if $(filter 1,$(DEV)),:socle/compose-dev.yaml)
 
 # Empreinte des sources du client, passée en argument de build : le cache de
 # Compose ignore les modifications des contextes nommés (additional_contexts),

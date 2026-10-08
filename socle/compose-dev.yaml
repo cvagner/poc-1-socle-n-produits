@@ -1,0 +1,46 @@
+# Mode développement, à ajouter en dernier à COMPOSE_FILE (make up DEV=1).
+# - front : serveur Vite avec rechargement à chaud, sources montées ;
+# - API : sources des paquets montées sur vendor/archi/*, relues par opcache
+#   (validate_timestamps) sans reconstruction.
+# CLIENT (cli1|cli2) est fourni par le Makefile. Chemins relatifs à socle/.
+# Une modification de dépendance, de fournisseur de service, de l'hôte Laravel
+# ou de vite.config.js demande toujours make up DEV=1 (cf. ADR 0012).
+services:
+  front:
+    build:
+      target: dev
+    # Répertoires montés, jamais de fichier seul : un éditeur qui enregistre
+    # par renommage atomique (JetBrains, vim…) change l'inode du fichier, et un
+    # montage de fichier seul resterait sur l'ancienne version.
+    volumes:
+      - ./frontend/packages/core-ui/src:/src/packages/core-ui/src:ro
+      - ../${CLIENT:?CLIENT requis (cli1|cli2)}/frontend:/src/apps/client:ro
+    environment:
+      # Cache de Vite hors des sources montées en lecture seule (vite.config.js)
+      VITE_CACHE_DIR: /tmp/vite
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M
+    healthcheck:
+      # 127.0.0.1 : Vite écoute en IPv4, localhost résoudrait en ::1
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/"]
+
+  api-common:
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+    volumes:
+      - ./backend/packages/core:/app/vendor/archi/core:ro
+      - ./backend/packages/common:/app/vendor/archi/common:ro
+
+  api:
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+    volumes:
+      - ./backend/packages/core:/app/vendor/archi/core:ro
+      # Inerte en solution 1 : common n'est pas déclaré dans packages.php
+      - ./backend/packages/common:/app/vendor/archi/common:ro
+      - ../${CLIENT}/backend:/app/vendor/archi/${CLIENT}:ro

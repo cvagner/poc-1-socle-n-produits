@@ -3,8 +3,12 @@
 # Image du front d'un client : workspace du socle (@archi/core-ui) + appli du
 # client, fournie par le contexte nommé « client » (compose :
 # build.additional_contexts.client) et copiée dans apps/client.
+#   - étape finale (défaut) : nginx sert la SPA construite ;
+#   - étape « dev » (socle/compose-dev.yaml) : serveur Vite avec rechargement à chaud.
 
-FROM node:24.21.0-alpine AS build
+# Dépendances installées dans l'image : servent au serveur de développement
+# comme au build de production.
+FROM node:24.21.0-alpine AS dev
 WORKDIR /src
 COPY package.json ./
 COPY packages/ packages/
@@ -17,6 +21,9 @@ ARG CLIENT_REV=
 RUN echo "Sources client : ${CLIENT_REV:-non renseignée}"
 COPY --from=client / apps/client/
 RUN npm install --no-audit --no-fund
+CMD ["npm", "run", "dev", "--workspace", "apps/client"]
+
+FROM dev AS build
 RUN npm run build --workspace apps/client
 
 FROM nginxinc/nginx-unprivileged:1.30.5-alpine
